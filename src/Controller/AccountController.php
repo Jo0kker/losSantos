@@ -51,7 +51,7 @@ class AccountController extends AbstractController
             $user->setPwd($pwd);
             $manager->persist($user);
             $manager->flush();
-            return $this->redirectToRoute('/account');
+            return $this->redirectToRoute('account');
         }
         return $this->render('account/register.html.twig', [
             'form' => $form->createView()
