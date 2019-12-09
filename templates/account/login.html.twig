@@ -25,9 +25,12 @@
                                 <div class="text-center">
                                     <h4 class="text-dark mb-4">Connexion</h4>
                                 </div>
+                                {% if hasError %}
+                                    <div class="alert alert-danger">Nom d'utilisateur ou mot de passe erroné.</div>
+                                {% endif %}
                                 <form class="user" method="post">
                                     <div class="form-group">
-                                        <input class="form-control form-control-user" type="text" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Pseudo discord" name="_username">
+                                        <input class="form-control form-control-user" type="text" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Pseudo discord" name="_username" value="{{ username }}">
                                     </div>
                                     <div class="form-group">
                                         <input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Mot de passe" name="_password">

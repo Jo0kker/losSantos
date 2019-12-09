@@ -93,6 +93,19 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "kms/froala-editor-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "666a78d430cecebe61a1990d7b8f638e45b2eeab"
+        },
+        "files": [
+            "config/packages/kms_froala_editor.yaml",
+            "config/routes/kms_froala_editor.yaml"
+        ]
+    },
     "monolog/monolog": {
         "version": "2.0.1"
     },

@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UsersRepository")
@@ -29,6 +32,10 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(
+     *     pattern="/(.*)#(\d{4})/",
+     *     message="Pseudo discord un peu bizard"
+     * )
      */
     private $discord;
 
@@ -39,15 +46,27 @@ class Users implements UserInterface
 
     public $pwdConf;
 
+
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default": "assets/img/avatars/avatar5.jpeg"})
      */
-    private $roles = [];
+    private $avatar;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $avatar;
+    private $tel;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $job;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $roles = [];
+
 
     public function getId(): ?int
     {
@@ -104,18 +123,9 @@ class Users implements UserInterface
 
     public function getRoles(): ?array
     {
-        $role = $this->roles;
-        if (empty($role)) {
-            return ['ROLE_CIVIL'];
-        }
-        return $role;
-    }
+        $roles = $this->roles;
+        return array_unique($roles);
 
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     /**
@@ -163,4 +173,36 @@ class Users implements UserInterface
 
         return $this;
     }
+
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+
+    public function setTel(?string $tel): self
+    {
+        $this->tel = $tel;
+
+        return $this;
+    }
+
+    public function getJob(): ?string
+    {
+        return $this->job;
+    }
+
+    public function setJob(?string $job): self
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+
+    public function setRoles(?array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
 }

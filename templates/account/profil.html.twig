@@ -1,21 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+{% block title %}Profil{% endblock %}
 
 {% block body %}
+    <style>
+        .custom-file-label { opacity: 0; }
+        .custom-file-input { opacity: 1; }
+    </style>
     <div class="container-fluid">
-        <h3 class="text-dark mb-4">Bonjour <strong>{{ app.user.nom|upper ~ " " ~ app.user.prenom|upper }}</strong></h3>
+        <h3 class="text-dark mb-4">Bonjour <strong>{{ app.user.nom|upper ~ " " ~ app.user.prenom|upper }}</strong><span class="float-right">Vos roles : {% for role in app.user.roles %} {{ role[5:] }} {% endfor %}</span></h3>
+
+        {{ form_start(form) }}
         <div class="row mb-3">
             <div class="col-lg-4">
                 <div class="card mb-3">
                     <div class="card-body text-center shadow">
                         <img class="rounded-circle mb-3 mt-4" src="{{ app.user.avatar }}" width="160" height="160">
-                        <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
+                        <div class="custom-file">
+                            {{ form_errors(form.avatar) }}
+                            {{ form_widget(form.avatar) }}
+                        </div>
                     </div>
                 </div>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="text-primary font-weight-bold m-0">Mail</h6>
+                        <h6 class="text-primary font-weight-bold m-0">Dernier mail</h6>
                     </div>
                     <div class="card-body">
                         <h1>Listing des mails</h1>
@@ -25,7 +34,6 @@
             <div class="col-lg-8">
                 <div class="row">
                     <div class="col">
-                        <form>
                             <div class="card shadow mb-3">
                                 <div class="card-header py-3">
                                     <p class="text-primary m-0 font-weight-bold">Information personnel</p>
@@ -36,13 +44,15 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="last_name"><strong>Numero de télèphone</strong></label>
-                                                    <input class="form-control" type="number" placeholder="555-5555" name="tel">
+                                                    {{ form_errors(form.tel) }}
+                                                    {{ form_widget(form.tel) }}
                                                 </div>
                                             </div>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="email"><strong>Adresse mail (discord)</strong></label>
-                                                    <input class="form-control" type="text" placeholder="jhon#1234" value="{{ app.user.discord }}" name="discord">
+                                                    {{ form_errors(form.discord) }}
+                                                    {{ form_widget(form.discord) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -56,35 +66,16 @@
                                 <div class="card-body">
                                         <div class="form-group">
                                             <label for="address"><strong>Metier / Status social</strong></label>
-                                            <input class="form-control" type="text" name="job">
-                                        </div>
-                                        <hr>
-                                        <div class="form-group">
-                                            <label for="address"><strong>Address</strong></label>
-                                            <input class="form-control" type="text" placeholder="Sunset Blvd, 38" name="address">
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label for="city"><strong>Ville</strong></label>
-                                                    <input class="form-control" type="text" placeholder="Los Angeles" name="city">
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label for="country"><strong>Pays</strong></label>
-                                                    <input class="form-control" type="text" placeholder="Los Santos " name="country">
-                                                </div>
-                                            </div>
+                                            {{ form_errors(form.job) }}
+                                            {{ form_widget(form.job) }}
                                         </div>
                                         <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Sauvegarder changement</button></div>
-
                                 </div>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
+        {{ form_end(form) }}
     </div>
 {% endblock %}

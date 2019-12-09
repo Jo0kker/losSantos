@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h3 class="text-dark mb-4">Administration utilisateur</h3>
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <p class="text-primary m-0 font-weight-bold">Liste des utilisateur</p>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col"><label class="col-form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search" /></label></div>
+                </div>
+                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                    <table class="table dataTable my-0 table-hover" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>Nom prenom</th>
+                            <th>Role</th>
+                            <th>Metier</th>
+                            <th>Mail discord</th>
+                            <th>Téléphone</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td><img class="rounded-circle mr-2" width="30" height="30" src="/{{ user.avatar }}" />{{ user.nom ~ " " ~ user.prenom }}</td>
+                                <td>{% for role in user.roles %}
+                                        <a class="btn btn-sm btn-secondary btn-icon-split mb-1" role="button" href="{{ path('remove_role', {'id':user.id,'roles':role}) }}">
+                                            <span class="text-white-50 icon"><i class="fas fa-trash"></i></span>
+                                            <span class="text-white text">{{ role[5:] }}</span>
+                                        </a>
+                                        <br>
+                                    {% endfor %}
+                                    <form action="{{ path('admin_addRole') }}" method="post">
+                                        <input type="text" hidden value="{{ user.id }}" name="id">
+                                        <select name="role">
+                                            <optgroup label="Ajouter un groupe">
+                                                <option value="ROLE_Civil">Civil</option>
+                                                <option value="ROLE_Admin">Admin</option>
+                                            </optgroup>
+                                        </select>
+                                        <button class="btn btn-success btn-sm ml-1" type="submit" role="button"><i class="fas fa-check text-white"></i></button>
+                                    </form>
+                                </td>
+                                <td>{{ user.job }}</td>
+                                <td>{{ user.discord }}</td>
+                                <td>{{ user.tel }}</td>
+                                <td>
+                                    <a class="btn btn-info btn-circle ml-1" role="button" href=""><i class="fas fa-info-circle text-white"></i></a>
+                                    <a class="btn btn-danger btn-circle ml-1" role="button"><i class="fas fa-trash text-white"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
