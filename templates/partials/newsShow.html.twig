@@ -1,0 +1,56 @@
+<div class="blog-home3">
+    <div class="container-fluid mb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h3 class="my-3">{{ titlePage }}</h3>
+                <h6 class="subtitle font-weight-normal">{{ descPage }}</h6>
+            </div>
+        </div>
+        <div class="row mt-4">
+            {% if news.0 is defined %}
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow"><a href="{{ path('show_news', {'slug': news.0.slug}) }}"><img class="card-img-top" src="{{ asset(news.0.img) }}" alt="wrappixel kit" /></a>
+                        <div class="date-pos text-center text-white p-3 bg-success-gradiant">{{ news.0.title }}</div>
+                        <h5 class="font-weight-medium mt-3"><a href="{{ path('show_news', {'slug': news.0.slug}) }}" class="link text-decoration-none">{{ news.0.description }}</a></h5>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-lg-6">
+                <div class="row">
+                    {% if news.1 is defined %}
+                        <div class="col-md-6">
+                            <div class="card border-0 mb-4 card-body shadow"><a href="{{ path('show_news', {'slug': news.1.slug}) }}"><img class="card-img-top" src="{{ asset(news.1.img) }}" alt="wrappixel kit" /></a>
+                                <div class="date-pos text-center text-white p-3 bg-success-gradiant">{{ news.1.title }}</div>
+                                <h6 class="font-weight-medium mt-3 text-center"><a href="{{ path('show_news', {'slug': news.1.slug}) }}" class="link text-decoration-none">{{ news.1.description }}</a></h6>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if news.2 is defined %}
+                        <div class="col-md-6">
+                            <div class="card border-0 mb-4 card-body shadow"><a href="{{ path('show_news', {'slug': news.2.slug}) }}"><img class="card-img-top" src="{{ asset(news.2.img) }}" alt="wrappixel kit" /></a>
+                                <div class="date-pos text-center text-white p-3 bg-success-gradiant">{{ news.2.title }}</div>
+                                <h6 class="font-weight-medium mt-3 text-center"><a href="{{ path('show_news', {'slug': news.2.slug}) }}" class="link text-decoration-none">{{ news.2.description }}</a></h6>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if news.3 is defined %}
+                        <div class="col-md-6">
+                            <div class="card border-0 mb-4 card-body shadow"><a href="{{ path('show_news', {'slug': news.3.slug}) }}"><img class="card-img-top" src="{{ asset(news.3.img) }}" alt="wrappixel kit" /></a>
+                                <div class="date-pos text-center text-white p-3 bg-success-gradiant">{{ news.3.title }}</div>
+                                <h6 class="font-weight-medium mt-3 text-center"><a href="{{ path('show_news', {'slug': news.3.slug}) }}" class="link text-decoration-none">{{ news.3.description }}</a></h6>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if news.4 is defined %}
+                        <div class="col-md-6">
+                            <div class="card border-0 mb-4 card-body shadow"><a href="{{ path('show_news', {'slug': news.4.slug}) }}"><img class="card-img-top" src="{{ asset(news.4.img) }}" alt="wrappixel kit" /></a>
+                                <div class="date-pos text-center text-white p-3 bg-success-gradiant">{{ news.4.title }}</div>
+                                <h6 class="font-weight-medium mt-3 text-center"><a href="{{ path('show_news', {'slug': news.4.slug}) }}" class="link text-decoration-none">{{ news.4.description }}</a></h6>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

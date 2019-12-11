@@ -38,13 +38,17 @@ class CommonController extends AbstractController
     public function newNews(Request $request, EntityManagerInterface $manager)
     {
         $news = new News();
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
+
         $form = $this->createForm(NewsType::class, $news);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $user = $this->getUser();
             $img = $form['img']->getData();
-            $tags = $news->getTags();
-            if (!in_array($tags, $user->getRoles(), true)) {
+            $tag = $_POST['tag'];
+            if (!in_array($tag, $user->getRoles(), true)) {
                 $this->addFlash(
                     'danger',
                     'Vous ne pouvez pas utiliser ce tag'
@@ -62,7 +66,7 @@ class CommonController extends AbstractController
                 }
                 $chemin = 'uploads/news/' . $newFilename;
                 $news->setImg($chemin);
-                $news->setTags($tags);
+                $news->setTags($tag);
                 $manager->persist($news);
                 $manager->flush();
                 $this->addFlash(
@@ -73,7 +77,21 @@ class CommonController extends AbstractController
             }
         }
         return $this->render('common/newNews.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'roles' => $userRoles
+        ]);
+    }
+
+    /**
+     * Permet d'afficher le detail de la news
+     * @Route("/news/{slug}", name="show_news")
+     * @param News $news
+     * @return Response
+     */
+    public function show_news(News $news): Response
+    {
+        return $this->render('common/news.html.twig', [
+            'news' => $news
         ]);
     }
 }

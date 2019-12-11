@@ -14,21 +14,26 @@
             {{ form_widget(form.title) }}
         </div>
         <div class="row">
-
-            <div class="form-group col-4">
+            <div class="form-group col-lg-4">
                 <label for="exampleFormControlInput1">Image de l'annonce</label>
                 {{ form_errors(form.img) }}
                 {{ form_widget(form.img) }}
             </div>
-            <div class="form-group col-6">
+            <div class="form-group col-lg-6">
                 <label for="exampleFormControlInput1">Courte description</label>
                 {{ form_errors(form.description) }}
                 {{ form_widget(form.description) }}
             </div>
-            <div class="form-group col-2">
-                <label for="exampleFormControlSelect1">Tag</label>
-                {{ form_widget(form.tags) }}
-                {{ form_errors(form.tags) }}
+            <div class="form-group col-lg-2">
+                <label for="exampleFormControlSelect1">Tag</label><br>
+                <select name="tag" class="selectpicker bg-primary" id="tag">
+                    {% for role in roles %}
+                        {% set roleName = role|split('_') %}
+                        {% if roleName.2 is defined and roleName.2 == "CHIEF" %}
+                        <option value="{{ role }}">{{ roleName.1 }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="form-group">

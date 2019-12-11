@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ news.title }}{% endblock %}
+{% block body %}
+    <div class="container-fluid bg-gradient-light">
+        <p class="h1 text-center">{{ news.title }}</p>
+        <h4 class="text-center">{{ news.description }}</h4>
+        <img class="card-img-top" src="{{ asset(news.img) }}" alt="{{ news.title }}">
+        <p>{{ news.detail|raw }}</p>
+    </div>
+{% endblock %}

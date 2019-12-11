@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Admin membre{% endblock %}
 
 {% block body %}
     <div class="container-fluid">
@@ -30,18 +30,25 @@
                             <tr>
                                 <td><img class="rounded-circle mr-2" width="30" height="30" src="/{{ user.avatar }}" />{{ user.nom ~ " " ~ user.prenom }}</td>
                                 <td>{% for role in user.roles %}
-                                        <a class="btn btn-sm btn-secondary btn-icon-split mb-1" role="button" href="{{ path('remove_role', {'id':user.id,'roles':role}) }}">
-                                            <span class="text-white-50 icon"><i class="fas fa-trash"></i></span>
-                                            <span class="text-white text">{{ role[5:] }}</span>
-                                        </a>
-                                        <br>
+                                        {% if role != 'ROLE_USER' %}
+                                            {% set roleName = role|split('_') %}
+                                            <a class="btn btn-sm {% if roleName.2 is defined and roleName.2 == 'CHIEF' %} btn-primary {% else %} btn-secondary {% endif %} btn-icon-split mb-1" role="button" href="{{ path('remove_role', {'id':user.id,'roles':role}) }}">
+                                                <span class="text-white-50 icon"><i class="fas fa-trash"></i></span>
+                                                <span class="text-white text">{{ roleName.1 }}</span>
+                                            </a>
+                                            <br>
+                                        {% endif %}
                                     {% endfor %}
                                     <form action="{{ path('admin_addRole') }}" method="post">
                                         <input type="text" hidden value="{{ user.id }}" name="id">
-                                        <select name="role">
-                                            <optgroup label="Ajouter un groupe">
+                                        <select name="role" class="selectpicker bg-gradient-info">
+                                            <optgroup label="Groupe Employe">
                                                 <option value="ROLE_Civil">Civil</option>
-                                                <option value="ROLE_Admin">Admin</option>
+                                                <option value="ROLE_Lspd">Lspd</option>
+                                            </optgroup>
+                                            <optgroup label="Groupe Chef">
+                                                <option value="ROLE_Admin_CHEF">Admin</option>
+                                                <option value="ROLE_Lspd_CHIEF">Lspd</option>
                                             </optgroup>
                                         </select>
                                         <button class="btn btn-success btn-sm ml-1" type="submit" role="button"><i class="fas fa-check text-white"></i></button>

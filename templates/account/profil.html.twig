@@ -8,7 +8,17 @@
         .custom-file-input { opacity: 1; }
     </style>
     <div class="container-fluid">
-        <h3 class="text-dark mb-4">Bonjour <strong>{{ app.user.nom|upper ~ " " ~ app.user.prenom|upper }}</strong><span class="float-right">Vos roles : {% for role in app.user.roles %} {{ role[5:] }} {% endfor %}</span></h3>
+        <h3 class="text-dark mb-4">Bonjour <strong>{{ app.user.nom|upper ~ " " ~ app.user.prenom|upper }}</strong>
+            <span class="float-right">Vos roles :
+                {% for role in app.user.roles %}
+                    {% if role != 'ROLE_USER' %}
+                        <span class="badge rounded badge-primary">
+                            {{ role[5:] }}
+                        </span>
+                    {% endif %}
+                {% endfor %}
+            </span>
+        </h3>
 
         {{ form_start(form) }}
         <div class="row mb-3">

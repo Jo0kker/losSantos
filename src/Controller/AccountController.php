@@ -88,6 +88,7 @@ class AccountController extends AbstractController
     public function profil(Request $request, EntityManagerInterface $manager)
     {
         $user = $this->getUser();
+        $previousAvatar = $user->getAvatar();
         $userAvatar = $user->getAvatar();
         $form = $this->createForm(ProfilType::class, $user);
         $form->handleRequest($request);
@@ -98,8 +99,10 @@ class AccountController extends AbstractController
                 $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid('', true).'.'.$avatar->guessExtension();
                 try {
-                    $filesystem = new Filesystem();
-                    $filesystem->remove($userAvatar);
+                    if ($previousAvatar !== 'assets/img/avatars/avatar5.jpeg') {
+                        $filesystem = new Filesystem();
+                        $filesystem->remove($userAvatar);
+                    }
                     $avatar->move($this->getParameter('avatar_directory'), $newFilename);
                 } catch (FileException $e) {
 

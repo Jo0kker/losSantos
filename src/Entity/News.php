@@ -2,10 +2,18 @@
 
 namespace App\Entity;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NewsRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"title"},
+ *     message="Nom de news déjà utilisé"
+ * )
  */
 class News
 {
@@ -40,6 +48,22 @@ class News
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $tags;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    /**
+     * Permet d'int le slug
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function initSlug(): void
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->title);
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +126,18 @@ class News
     public function setTags(string $tags): self
     {
         $this->tags = $tags;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

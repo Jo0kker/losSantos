@@ -53,12 +53,6 @@ class NewsType extends AbstractType
                     'class' => 'ckeditor'
                 ]
             ])
-            ->add('tags', ChoiceType::class, [
-                'choices' => [
-                    'Général' => 'ROLE_Admin',
-                    'LSPD' => 'ROLE_lspd_chief'
-                ]
-            ])
         ;
     }
 
