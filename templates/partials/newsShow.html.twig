@@ -52,5 +52,30 @@
                 </div>
             </div>
         </div>
+        {% if news|length > 5 %}
+        <table class="table table-hover table-dark">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">Titre</th>
+                <th scope="col">Description</th>
+                <th scope="col">Catégorie</th>
+                <th scope="col">Date de création</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, new in news %}
+                {% if key >= 5 %}
+                    {% set tagName = new.tags|split('_') %}
+                    <tr>
+                        <th>{{ new.title }}</th>
+                        <td>{{ new.description }}</td>
+                        <td>{{ tagName.1 }}</td>
+                        <td>{{ new.createdAt|date('d/m/Y') }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
     </div>
 </div>

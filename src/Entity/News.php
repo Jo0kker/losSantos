@@ -2,9 +2,8 @@
 
 namespace App\Entity;
 
-use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -45,7 +44,7 @@ class News
     private $detail;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $tags;
 
@@ -53,6 +52,11 @@ class News
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
 
     /**
      * Permet d'int le slug
@@ -63,6 +67,18 @@ class News
     {
         $slugger = new AsciiSlugger();
         $this->slug = $slugger->slug($this->title);
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     * @throws \Exception
+     */
+    public function initDateTime(): void
+    {
+        if (empty($this->createdAt)) {
+            $this->createdAt = new \DateTime();
+        }
     }
 
     public function getId(): ?int
@@ -138,6 +154,18 @@ class News
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

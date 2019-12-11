@@ -94,4 +94,5 @@ class CommonController extends AbstractController
             'news' => $news
         ]);
     }
+
 }
