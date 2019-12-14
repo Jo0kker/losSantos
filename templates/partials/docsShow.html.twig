@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <h2>Documents - {{ nameTag }}</h2>
+    <div class="bg-white rounded shadow">
+        <div class="table-responsive">
+            <table class="table table-fixed table-hover">
+                <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Date de création</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for doc in docs %}
+                    <tr>
+                        <th>{{ doc.title }}</th>
+                        <td>{{ doc.description }}</td>
+                        <td>{{ doc.createdAt|date('d/m/Y') }}</td>
+                        <td>
+                            <a class="btn btn-info btn-circle ml-1" role="button"><i class="fas fa-info-circle text-white"></i></a>
+                            <a class="btn btn-danger btn-circle ml-1" role="button"><i class="fas fa-trash text-white"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

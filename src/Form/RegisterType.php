@@ -29,7 +29,7 @@ class RegisterType extends AbstractType
             ->add('discord', TextType::class, [
                 'attr'=> [
                     'class' => 'form-control form-control-user',
-                    'placeholder' => 'Votre mail discord'
+                    'placeholder' => 'Mail discord ex:John#1234'
                 ]
             ])
             ->add('pwd', PasswordType::class, [

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Docs;
 use App\Entity\News;
+use App\Form\DocsType;
 use App\Form\NewsType;
 use App\Repository\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,9 +22,19 @@ class CommonController extends AbstractController
      */
     public function index(NewsRepository $repo)
     {
-        $news = $repo->findBy([], [
-            'id' => 'DESC'
-        ]);
+        if (isset($_GET['tag'])) {
+            $tag = htmlspecialchars(trim($_GET['tag']));
+            $news = $repo->findBy([
+                'tags' => $tag
+            ],[
+                'createdAt' => 'DESC'
+            ]);
+        }else{
+            $news = $repo->findBy([], [
+                'id' => 'DESC'
+            ]);
+        }
+
         return $this->render('common/index.html.twig', [
             'news' => $news,
         ]);
@@ -95,4 +107,39 @@ class CommonController extends AbstractController
         ]);
     }
 
+    /**
+     * Permet de crée une doc
+     * @Route("/newDocs", name="new_Docs")
+     */
+    public function newDocs(EntityManagerInterface $manager, Request $request)
+    {
+        $doc = new Docs();
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
+        $form = $this->createForm(DocsType::class, $doc);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $tag = $_POST['tag'];
+            if (!in_array($tag, $user->getRoles(), true)) {
+                $this->addFlash(
+                    'danger',
+                    'Vous ne pouvez pas utiliser ce tag'
+                );
+                return $this->redirectToRoute('new_News');
+            }
+            $doc->setTags($tag);
+            $manager->persist($doc);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                'Création effectuée avec success'
+            );
+            return $this->redirectToRoute('homepage');
+        }
+        return $this->render('common/newDocs.html.twig', [
+            'form' => $form->createView(),
+            'roles' => $userRoles
+        ]);
+    }
 }

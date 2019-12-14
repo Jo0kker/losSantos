@@ -12,8 +12,9 @@
             <span class="float-right">Vos roles :
                 {% for role in app.user.roles %}
                     {% if role != 'ROLE_USER' %}
-                        <span class="badge rounded badge-primary">
-                            {{ role[5:] }}
+                        {% set roleName = role|split('_') %}
+                        <span class="badge rounded {% if roleName.2 is defined and roleName.2 == 'CHIEF' %} badge-danger {% else %} badge-primary {% endif %}">
+                            {{ roleName.1 }}
                         </span>
                     {% endif %}
                 {% endfor %}

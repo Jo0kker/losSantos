@@ -34,7 +34,7 @@ class Users implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\Regex(
      *     pattern="/(.*)#(\d{4})/",
-     *     message="Pseudo discord un peu bizard"
+     *     message="Merci d'adopter le bon format (ex:Jhon#1234)"
      * )
      */
     private $discord;

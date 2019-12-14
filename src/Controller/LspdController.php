@@ -2,25 +2,30 @@
 
 namespace App\Controller;
 
+use App\Repository\DocsRepository;
 use App\Repository\NewsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class LspdController extends AbstractController
 {
     /**
-     * Permet d'afficher les news de la police
-     * @Route("/lspd", name="lspd_news")
+     * Permet d'afficher les documents
+     * @Route("/lspd/docs", name="lspd_docs")
+     * @param DocsRepository $repo
+     * @return Response
      */
-    public function news(NewsRepository $repo)
+    public function docs(DocsRepository $repo)
     {
-        $news = $repo->findBy([
-            'tags' => 'ROLE_Lspd'
+        $docs = $repo->findBy([
+            'tags' => 'ROLE_lspd_CHIEF'
         ], [
-            'id' => 'DESC'
+            'createdAt' => 'DESC'
         ]);
-        return $this->render('lspd/news.html.twig', [
-            'news' => $news,
+        return $this->render('lspd/docs.html.twig', [
+            'docs' => $docs,
+            'nameTag' => 'LSPD'
         ]);
     }
 }
