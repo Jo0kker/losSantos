@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %}Demande de contact{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <h1>Prise de contact</h1>
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="form-group col-lg-10">
+                <label for="exampleFormControlInput1">Titre</label>
+                {{ form_errors(form.title) }}
+                {{ form_widget(form.title) }}
+            </div>
+            <div class="form-group col-lg-2">
+                <label for="exampleFormControlInput1">Organisme destinataire</label>
+                <select name="tag" class="selectpicker bg-primary" id="tag">
+                    <option value="ROLE_Lspd">Lspd</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Contenu du message</label>
+            {{ form_widget(form.objet) }}
+            {{ form_errors(form.objet) }}
+        </div>
+        <button class="btn btn-primary">Envoyer</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('ckeditor/adapters/jquery.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('textarea.ckeditor').ckeditor();
+        });
+    </script>
+{% endblock %}

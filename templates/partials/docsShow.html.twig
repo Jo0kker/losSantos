@@ -18,8 +18,10 @@
                         <td>{{ doc.description }}</td>
                         <td>{{ doc.createdAt|date('d/m/Y') }}</td>
                         <td>
-                            <a class="btn btn-info btn-circle ml-1" role="button"><i class="fas fa-info-circle text-white"></i></a>
-                            <a class="btn btn-danger btn-circle ml-1" role="button"><i class="fas fa-trash text-white"></i></a>
+                            <a class="btn btn-info btn-circle ml-1" role="button" href="{{ path('docs_show', {'slug': doc.slug}) }}"><i class="fas fa-info-circle text-white"></i></a>
+                            {% if chief %}
+                            <a class="btn btn-danger btn-circle ml-1" role="button" href="{{ path('docs_remove', {'slug': doc.slug}) }}"><i class="fas fa-trash text-white"></i></a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

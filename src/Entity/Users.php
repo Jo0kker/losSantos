@@ -67,6 +67,18 @@ class Users implements UserInterface
      */
     private $roles = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Contact", mappedBy="Author", orphanRemoval=true)
+     */
+    private $contacts;
+
+
+    public function __construct()
+    {
+        $this->contacts = new ArrayCollection();
+        $this->lspdRappArrests = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -202,6 +214,37 @@ class Users implements UserInterface
     public function setRoles(?array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Contact[]
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+            $contact->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contacts->contains($contact)) {
+            $this->contacts->removeElement($contact);
+            // set the owning side to null (unless already changed)
+            if ($contact->getAuthor() === $this) {
+                $contact->setAuthor(null);
+            }
+        }
 
         return $this;
     }

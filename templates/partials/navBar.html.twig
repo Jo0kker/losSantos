@@ -7,6 +7,8 @@
         <hr class="sidebar-divider my-0" />
         <ul class="nav navbar-nav text-light" id="accordionSidebar">
             <li role="presentation" class="nav-item"><a class="nav-link" href="{{ path('homepage') }}"><i class="fas fa-tachometer-alt"></i><span> News</span></a></li>
+            {% set roleUser = app.user.roles %}
+            {% if 'ROLE_Admin' in roleUser or 'ROLE_Lspd_CHIEF' in roleUser %}
             <li role="presentation" class="nav-item">
                 <div>
                     <a class="btn btn-link nav-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-5" href="#collapse-5" role="button">
@@ -14,12 +16,14 @@
                     </a>
                     <div class="collapse" id="collapse-5">
                         <div class="bg-white border rounded py-2 collapse-inner">
+                            <a href="{{ path('new_News') }}" class="collapse-item">Créer annonce</a>
+                            <a href="{{ path('new_Docs') }}" class="collapse-item">Créer documentation</a>
                             <a href="{{ path('admin_user') }}" class="collapse-item">Gestion utilisateur</a>
-                            <a href="" class="collapse-item">Mail</a>
                         </div>
                     </div>
                 </div>
             </li>
+            {% endif %}
             <hr class="sidebar-divider" />
             <div class="sidebar-heading">
                 <p class="mb-0">Service public</p>
@@ -33,75 +37,23 @@
                         <div class="bg-white border rounded py-2 collapse-inner">
                             <h6 class="collapse-header">Partie public:</h6>
                             <a class="collapse-item" href="{{ path('lspd_docs') }}">Documentation</a>
-                            <a class="collapse-item" href="">Contact</a>
+                            <a class="collapse-item" href="{{ path('new_contact') }}">Contact</a>
                             <h6 class="collapse-header">Partie privé:</h6>
-                            <a href="{{ path('new_News') }}" class="collapse-item">Créer annonce</a>
-                            <a href="{{ path('new_Docs') }}" class="collapse-item">Créer documentation</a>
-                            <a href="" class="collapse -item">Rapport d'arrestation</a>
-                            <a href="" class="collapse-item">Rapport d'intervention</a>
-                            <a href="" class="collapse-item">Documentation</a>
-                            <a href="" class="collapse-item">Casier</a>
+                            <a href="#" class="collapse-item">Rapport d'arrestation</a>
+                            <a href="#" class="collapse-item">Rapport d'intervention</a>
+                            <a href="{{ path('lspd_contact') }}" class="collapse-item">Mail entreprise</a>
+                            <a href="{{ path('lspd_membres') }}" class="collapse-item">Membres</a>
+                            <a href="#" class="collapse-item">Casier</a>
                         </div>
                     </div>
                 </div>
             </li>
-            <li role="presentation" class="nav-item">
-                <div>
-                    <a class="btn btn-link nav-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-2" href="#collapse-2" role="button">
-                        <i class="fas fa-wrench"></i><span>EMS</span>
-                    </a>
-                    <div class="collapse" id="collapse-2">
-                        <div class="bg-white border rounded py-2 collapse-inner">
-                            <h6 class="collapse-header">Partie public:</h6>
-                            <a class="collapse-item" href="">Renseignement</a>
-                            <a class="collapse-item" href="">Demande de rendez-vous</a>
-                            <h6 class="collapse-header">Partie privée:</h6>
-                            <a class="collapse-item" href="">Dossier patients</a>
-                            <a class="collapse-item" href="">Liste des rendez-vous</a>
-                        </div>
-                    </div>
-                </div>
-            </li>
+
             <hr class="sidebar-divider" />
             <div class="sidebar-heading">
                 <p class="mb-0">Societé diverse</p>
             </div>
-            <li role="presentation" class="nav-item">
-                <div>
-                    <a class="btn btn-link nav-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-3" href="#collapse-3" role="button">
-                        <i class="fas fa-folder"></i><span>Sandi-Events</span>
-                    </a>
-                    <div class="collapse" id="collapse-3">
-                        <div class="bg-white border rounded py-2 collapse-inner">
-                            <h6 class="collapse-header">Partie public:</h6>
-                            <a class="collapse-item" href="">Annonces</a>
-                            <a class="collapse-item" href="">Evènements</a>
-                            <a class="collapse-item" href="">Sandy-News</a>
-                            <a class="collapse-item" href="#">Contact</a>
-                            <h6 class="collapse-header">Partie privée:</h6>
-                            <a class="collapse-item" href="">Ajout annonces / event</a>
-                            <a class="collapse-item" href="">Liste des mails</a></div>
-                    </div>
-                </div>
-            </li>
-            <li role="presentation" class="nav-item">
-                <div>
-                    <a class="btn btn-link nav-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-4" href="#collapse-4" role="button">
-                        <i class="fas fa-folder"></i><span>Banque</span>
-                    </a>
-                    <div class="collapse" id="collapse-4">
-                        <div class="bg-white border rounded py-2 collapse-inner">
-                            <h6 class="collapse-header">Partie public:</h6>
-                            <a class="collapse-item" href="">Annonces</a>
-                            <a class="collapse-item" href="">Crédit</a>
-                            <a class="collapse-item" href="">Contact</a>
-                            <h6 class="collapse-header">Partie privée:</h6>
-                            <a class="collapse-item" href="">Ajout annonce</a>
-                            <a class="collapse-item" href="">Liste des mails</a></div>
-                    </div>
-                </div>
-            </li>
-            <hr class="sidebar-divider" />
+
         </ul>
         <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
     </div>

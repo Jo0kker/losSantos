@@ -54,6 +54,11 @@ class Docs
     private $createdAt;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $privat;
+
+    /**
      * Permet d'int le slug
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
@@ -149,6 +154,18 @@ class Docs
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getPrivat(): ?bool
+    {
+        return $this->privat;
+    }
+
+    public function setPrivat(bool $privat): self
+    {
+        $this->privat = $privat;
 
         return $this;
     }

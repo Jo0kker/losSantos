@@ -58,17 +58,20 @@
                     <div class="d-none d-sm-block topbar-divider"></div>
                     <li class="nav-item dropdown no-arrow" role="presentation">
                         <div class="nav-item dropdown no-arrow">
-                            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
-                                <span class="d-none d-lg-inline mr-2 text-gray-600 small">{{ app.user.nom ~ " " ~ app.user.prenom }}</span>
+                            <a class="dropdown-toggle nav-link text-white" data-toggle="dropdown" aria-expanded="false" href="#">
+                                <span class="d-none d-lg-inline mr-2 small">{{ app.user.nom ~ " " ~ app.user.prenom }}</span>
                                 <img class="rounded-circle img-profile" src="/{{ app.user.avatar }}">
                             </a>
-                            <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
-                                <a class="dropdown-item" role="presentation" href="{{ path('account') }}">
+                            <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in bg-gradient-dark text-white " role="menu">
+                                <a class="dropdown-item text-white" role="presentation" href="{{ path('account') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Mon compte
                                 </a>
+                                <a class="dropdown-item text-white" role="presentation" href="{{ path('account') }}">
+                                    <i class="fas fa-envelope-open-text fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Mail
+                                </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" role="presentation" href="{{ path('logout') }}">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout
+                                <a class="dropdown-item text-white" role="presentation" href="{{ path('logout') }}">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-white"></i>&nbsp;Logout
                                 </a>
                             </div>
                         </div>

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ docs.title }}{% endblock %}
+{% block body %}
+    <div class="container-fluid bg-gradient-light pb-3">
+        <div class="header-a text-center">
+            <h2>{{ docs.title }}</h2>
+            <h5>{{ docs.description }}</h5>
+        </div>
+        <hr>
+        <div class="">
+            <p>{{ docs.detail|raw }}</p>
+        </div>
+    </div>
+{% endblock %}

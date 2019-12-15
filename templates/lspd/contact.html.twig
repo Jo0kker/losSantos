@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}Lspd contact{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <h1>Demande de contact pour la LSPD</h1>
+        <div class="row">
+            <table class="table table-info table-hover col-lg-8">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Auteur</th>
+                    <th>Date</th>
+                    <th>Objet</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for contact in contacts %}
+                    <tr>
+                        <td>{{ contact.Author.nom }} {{ contact.author.prenom }}</td>
+                        <td>{{ contact.createdAt|date('d/m/Y') }}</td>
+                        <td>{{ contact.title }}</td>
+                        <td>
+                            <a href="{{ path('lspd_contact', {'id': contact.id}) }}"><button class="btn btn-primary"><i class="fas fa-info"></i></button></a>
+                            <a href="{{ path('lspd_contact_delete', {'id': contact.id}) }}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="col-lg-4">
+                <h3 class="border-bottom-dark pb-3">Contenu du message</h3>
+                <p>{{ content.objet|raw }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

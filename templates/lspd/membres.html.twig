@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block title %}Membres LSPD{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <h2>Membres de la LSPD</h2>
+    <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+        <table class="table dataTable my-0 table-hover" id="dataTable">
+            <thead>
+            <tr>
+                <th>Nom prenom</th>
+                <th>Role</th>
+                <th>Metier</th>
+                <th>Mail discord</th>
+                <th>Téléphone</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><img class="rounded-circle mr-2" width="30" height="30" src="/{{ user.avatar }}" />{{ user.nom ~ " " ~ user.prenom }}</td>
+                    <td>{% for role in user.roles %}
+                            {% if role != 'ROLE_USER' %}
+                                {% set roleName = role|split('_') %}
+                                {% if roleName.1 == 'Lspd' %}
+                                <a class="btn btn-sm {% if roleName.2 is defined and roleName.2 == 'CHIEF' %} btn-danger {% else %} btn-primary {% endif %} btn-icon-split mb-1" role="button" href="{{ path('remove_role', {'id':user.id,'roles':role}) }}">
+                                    <span class="text-white-50 icon"><i class="fas fa-trash"></i></span>
+                                    <span class="text-white text">{{ roleName.1 }}</span>
+                                </a>
+                                <br>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        <form action="{{ path('admin_addRole') }}" method="post">
+                            <input type="text" hidden value="{{ user.id }}" name="id">
+                            <select name="role" class="custom-select col-lg-4">
+                                <optgroup label="Groupe Lspd">
+                                    <option value="ROLE_Lspd">Lspd</option>
+                                    <option value="ROLE_Lspd_CHIEF">Lspd Chef</option>
+                                </optgroup>
+                                </optgroup>
+                            </select>
+                            <button class="btn btn-primary btn-sm ml-1" type="submit" role="button"><i class="fas fa-plus text-white"></i></button>
+                        </form>
+                    </td>
+                    <td>{{ user.job }}</td>
+                    <td>{{ user.discord }}</td>
+                    <td>{{ user.tel }}</td>
+                </tr>
+            {% endfor %}
+            </tfoot>
+        </table>
+    </div>
+</div>
+{% endblock %}
