@@ -6,6 +6,8 @@ use App\Entity\Contact;
 use App\Entity\Docs;
 use App\Entity\RappArrest;
 use App\Form\RappArrestType;
+use App\Repository\RappArrestRepository;
+use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ContactRepository;
 use App\Repository\DocsRepository;
 use App\Repository\NewsRepository;
@@ -13,6 +15,7 @@ use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -149,15 +152,57 @@ class LspdController extends AbstractController
     /**
      * Création d'un nouveau rapport d'arrestation
      * @Route("/lspd/newRapportArrest", name="lspd_newRapportArrest")
+     * @IsGranted("ROLE_Lspd")
      * @param EntityManagerInterface $manager
+     * @param Request $request
+     * @return Response
      */
-    public function newRapportArrest(EntityManagerInterface $manager)
+    public function newRapportArrest(EntityManagerInterface $manager, Request $request): Response
     {
         $rapportArrest = new RappArrest();
         $form = $this->createForm(RappArrestType::class, $rapportArrest);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $author = $user->getNom() . " " . $user->getPrenom();
+            $img = $form['img']->getData();
+            if ($img) {
+                $originalFilename = pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid('', true).'.'.$img->guessExtension();
+                try {
+                    $img->move($this->getParameter('lspd_arrestation'), $newFilename);
+                } catch (FileException $e) {
 
+                }
+                $chemin = 'uploads/lspd/rapportArrestation/' . $newFilename;
+                $rapportArrest->setImg($chemin);
+                $rapportArrest->setAuthor($author);
+                $manager->persist($rapportArrest);
+                $manager->flush();
+                $this->addFlash(
+                    'success',
+                    'Rapport enregistrer'
+                );
+                return $this->redirectToRoute('homepage');
+            }
+        }
         return $this->render('/lspd/newArrest.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Voir les rapport d'arrestation
+     * @Route("/lspd/rapportArrest", name="lspc_showRapportArrest")
+     * @IsGranted("ROLE_Lspd")
+     * @param RappArrestRepository $repo
+     */
+    public function showRapportArrest(RappArrestRepository $repo)
+    {
+        $rapport = $repo->findAll();
+        return $this->render("/lspd/Arrest.html.twig", [
+            'rapport' => $rapport
         ]);
     }
 }

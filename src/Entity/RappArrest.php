@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RappArrestRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class RappArrest
 {
@@ -95,6 +96,18 @@ class RappArrest
      * @ORM\Column(type="string", length=255)
      */
     private $peine;
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     * @throws \Exception
+     */
+    public function initDateTime(): void
+    {
+        if (empty($this->createdAt)) {
+            $this->createdAt = new \DateTime();
+        }
+    }
 
     public function getId(): ?int
     {

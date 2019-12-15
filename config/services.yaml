@@ -6,6 +6,7 @@
 parameters:
     avatar_directory: '%kernel.project_dir%/public/uploads/avatar'
     news_directory: '%kernel.project_dir%/public/uploads/news'
+    lspd_arrestation: '%kernel.project_dir%/public/uploads/lspd/rapportArrestation'
 
 services:
     # default configuration for services in *this* file
