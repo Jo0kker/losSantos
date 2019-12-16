@@ -7,6 +7,7 @@ use App\Entity\Users;
 use App\Form\ProfilType;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -76,9 +77,9 @@ class AccountController extends AbstractController
     /**
      * Page de gestion du profil
      * @Route("/account", name="account")
+     * @IsGranted("ROLE_USER")
      * @param Request $request
      * @param EntityManagerInterface $manager
-     * @param $user
      * @return Response
      */
     public function profil(Request $request, EntityManagerInterface $manager)

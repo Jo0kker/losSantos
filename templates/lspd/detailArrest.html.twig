@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+{% block title %}Rapport {{ arrest.id }}{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <h2>Rapport Arrestation n°{{ arrest.id }}</h2>
+        <div class="rounded bg-gradient-dark p-3 text-white">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h5>Auteur du rapport</h5>
+                    {{ arrest.author }}
+                </div>
+                <div class="col-lg-4">
+                    <h5>Date de création</h5>
+                    {{ arrest.createdAt|date('d/m/Y H:i') }}
+                </div>
+                <div class="col-lg-4">
+                    <h5>Officier arretant</h5>
+                    {{ arrest.userArrest }}
+                </div>
+            </div>
+            <hr class="bg-white">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h5>Officier présent</h5>
+                    {{ arrest.otherUsers }}
+                </div>
+                <div class="col-lg-4">
+                    <h5>Date d'arrestation</h5>
+                    {{ arrest.dateArrest|date('d/m/Y H:i') }}
+                </div>
+                <div class="col-lg-4">
+                    <h5>Lieux d'arrestation</h5>
+                    {{ arrest.lieux }}
+                </div>
+            </div>
+            <hr class="bg-white">
+            <div class="row">
+                <div class="col-lg-3">
+                    <h5>Nom</h5>
+                    {{ arrest.name }}
+                </div>
+                <div class="col-lg-3">
+                    <h5>Prenom</h5>
+                    {{ arrest.prenom }}
+                </div>
+                <div class="col-lg-3">
+                    <h5>Date de naissance</h5>
+                    {{ arrest.birthDay }}
+                </div>
+                <div class="col-lg-3">
+                    <h5>Sexe</h5>
+                    {{ arrest.sexe }}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-lg-4">
+                    <h5>Adresse</h5>
+                    {{ arrest.adress }}
+                </div>
+                <div class="col-lg-4">
+                    <h5>Amande</h5>
+                    {{ arrest.amande }}
+                </div>
+                <div class="col-lg-4">
+                    <h5>Peine</h5>
+                    {{ arrest.peine }}
+                </div>
+            </div>
+            <hr class="bg-primary">
+            <div class="row mt-3">
+                <div class="col-lg-6">
+                    <h5>Image</h5>
+                    <img src="{{ asset(arrest.img) }}" alt="{{ arrest.name }}">
+                </div>
+                <div class="col-lg-6 shadow border border-white rounded">
+                    <h5>Charge retenu</h5>
+                    <hr class="bg-white">
+                    {{ arrest.charge|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

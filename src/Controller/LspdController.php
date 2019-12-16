@@ -7,6 +7,7 @@ use App\Entity\Docs;
 use App\Entity\RappArrest;
 use App\Form\RappArrestType;
 use App\Repository\RappArrestRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ContactRepository;
 use App\Repository\DocsRepository;
@@ -60,6 +61,7 @@ class LspdController extends AbstractController
 
     /**
      * Permet d'afficher les contact de la lspd
+     * @IsGranted("ROLE_Lspd")
      * @Route("/lspd/contact", name="lspd_contact")
      * @param ContactRepository $repo
      * @return RedirectResponse|Response
@@ -100,6 +102,7 @@ class LspdController extends AbstractController
 
     /**
      * Delete contact entity
+     * @IsGranted("ROLE_Lspd")
      * @Route("/lspd/contact/delete", name="lspd_contact_delete")
      * @param EntityManagerInterface $manager
      * @param ContactRepository $repo
@@ -129,10 +132,10 @@ class LspdController extends AbstractController
 
     /**
      * Permet d'administrer les membres de la lspd
+     * @IsGranted("ROLE_Lspd")
      * @Route("/lspd/membres", name="lspd_membres")
      * @param EntityManagerInterface $manager
      * @param UsersRepository $repo
-     * @IsGranted("ROLE_Lspd_CHIEF")
      * @return Response
      */
     public function modUsers(EntityManagerInterface $manager, UsersRepository $repo): Response
@@ -147,6 +150,79 @@ class LspdController extends AbstractController
         return $this->render('lspd/membres.html.twig', [
             'users' => $result
         ]);
+    }
+
+    /**
+     * Permet d'ajouter un role sur le panneau de la lspd
+     * @Route("/lspd/addRoleLspd", name="lspd_addRole")
+     * @IsGranted("ROLE_Lspd_CHIEF")
+     * @param UsersRepository $repo
+     * @param EntityManagerInterface $manager
+     * @return RedirectResponse
+     */
+    public function addRoleLspd(UsersRepository $repo, EntityManagerInterface $manager): ?RedirectResponse
+    {
+        $id = $_POST['id'];
+        $role = htmlspecialchars(trim($_POST['role']));
+        $user = $repo->findOneBy(['id' => $id]);
+        if (in_array($role, $user->getRoles(), true)) {
+            $this->addFlash(
+                'warning',
+                'La personne a déjà ce role'
+            );
+            return $this->redirectToRoute('lspd_membres');
+        }else{
+
+            $newRole = $user->getRoles();
+            $newRole[] = $role;
+            $user->setRoles($newRole);
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                'Role ajouter avec success'
+            );
+            return $this->redirectToRoute('lspd_membres');
+        }
+    }
+
+    /**
+     * Permet de supprimer un role de la lspd
+     * @Route("/lspd/removeRole/{id}/{roles}", name="lspd_removeRole")
+     * @param $id
+     * @param $roles
+     * @param UsersRepository $repository
+     * @return RedirectResponse
+     */
+    public function removeRoleLspd($id, $roles, UsersRepository $repository, EntityManagerInterface $manager)
+    {
+        $user = $repository->findOneBy(['id' => $id]);
+        if (in_array($roles, $user->getRoles(), true)) {
+
+            if ($roles === 'ROLE_Lspd' && in_array('ROLE_Lspd_CHIEF', $user->getRoles(), true)) {
+                $this->addFlash(
+                    'warning',
+                    'La personne ne peu etre rester chef sans etre membres'
+                );
+                return $this->redirectToRoute('lspd_membres');
+            }
+            $roleMod = $user->getRoles();
+            unset($roleMod[array_search($roles, $roleMod, true)]);
+            $user->setRoles($roleMod);
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                'Role supprimer avec succes'
+            );
+            return $this->redirectToRoute('lspd_membres');
+        } else {
+            $this->addFlash(
+                'danger',
+                'Erreur dans la selection du role a supprimer'
+            );
+            return $this->redirectToRoute('lspd_membres');
+        }
     }
 
     /**
@@ -194,15 +270,30 @@ class LspdController extends AbstractController
 
     /**
      * Voir les rapport d'arrestation
-     * @Route("/lspd/rapportArrest", name="lspc_showRapportArrest")
+     * @Route("/lspd/rapportArrest", name="lspd_showRapportArrest")
      * @IsGranted("ROLE_Lspd")
      * @param RappArrestRepository $repo
+     * @return Response
      */
-    public function showRapportArrest(RappArrestRepository $repo)
+    public function showRapportArrest(RappArrestRepository $repo): Response
     {
         $rapport = $repo->findAll();
         return $this->render("/lspd/Arrest.html.twig", [
             'rapport' => $rapport
+        ]);
+    }
+
+    /**
+     * Permet de voir un rapport d'arrestation
+     * @IsGranted("ROLE_Lspd")
+     * @Route("/lspd/rapportArrest/{id}", name="lspd_showDetailRapportArrest")
+     * @param RappArrest $arrest
+     * @return Response
+     */
+    public function showRapportArrestDetail(RappArrest $arrest): Response
+    {
+        return $this->render('lspd/detailArrest.html.twig', [
+            'arrest' => $arrest
         ]);
     }
 }

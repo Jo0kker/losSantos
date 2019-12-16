@@ -11,6 +11,7 @@ use App\Form\NewsType;
 use App\Repository\DocsRepository;
 use App\Repository\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -50,6 +51,7 @@ class CommonController extends AbstractController
     /**
      * Permet de creer une annonce
      * @Route("/newNews", name="new_News")
+     * @IsGranted("ROLE_Lspd_CHIEF")
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @return Response
@@ -121,6 +123,7 @@ class CommonController extends AbstractController
 
     /**
      * Permet de crée une doc
+     * @IsGranted("ROLE_Lspd_CHIEF")
      * @Route("/newDocs", name="new_Docs")
      */
     public function newDocs(EntityManagerInterface $manager, Request $request)
@@ -194,6 +197,7 @@ class CommonController extends AbstractController
     /**
      * Remove docs
      * @Route("/docs/remove/{slug}", name="docs_remove")
+     * @IsGranted({"ROLE_Lspd_CHIEF", "ROLE_Admin"})
      * @param EntityManagerInterface $manager
      * @param Docs $docs
      * @return RedirectResponse|Response

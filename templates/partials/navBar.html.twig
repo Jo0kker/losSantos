@@ -16,8 +16,6 @@
                     </a>
                     <div class="collapse" id="collapse-5">
                         <div class="bg-white border rounded py-2 collapse-inner">
-                            <a href="{{ path('new_News') }}" class="collapse-item">Créer annonce</a>
-                            <a href="{{ path('new_Docs') }}" class="collapse-item">Créer documentation</a>
                             <a href="{{ path('admin_user') }}" class="collapse-item">Gestion utilisateur</a>
                         </div>
                     </div>
@@ -38,17 +36,22 @@
                             <h6 class="collapse-header">Partie public:</h6>
                             <a class="collapse-item" href="{{ path('lspd_docs') }}">Documentation</a>
                             <a class="collapse-item" href="{{ path('new_contact') }}">Contact</a>
+                            {% if 'ROLE_Lspd' in roleUser or 'ROLE_Lspd_CHIEF' in roleUser %}
                             <h6 class="collapse-header">Partie privé:</h6>
-                            <a href="#" class="collapse-item">Rapport d'arrestation</a>
+                            {% if 'ROLE_Lspd_CHIEF' in roleUser %}
+                                <a href="{{ path('new_News') }}" class="collapse-item">Créer annonce</a>
+                                <a href="{{ path('new_Docs') }}" class="collapse-item">Créer documentation</a>
+                            {% endif %}
+                            <a href="{{ path('lspd_showRapportArrest') }}" class="collapse-item">Rapport d'arrestation</a>
                             <a href="#" class="collapse-item">Rapport d'intervention</a>
                             <a href="{{ path('lspd_contact') }}" class="collapse-item">Mail entreprise</a>
                             <a href="{{ path('lspd_membres') }}" class="collapse-item">Membres</a>
                             <a href="#" class="collapse-item">Casier</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </li>
-
             <hr class="sidebar-divider" />
             <div class="sidebar-heading">
                 <p class="mb-0">Societé diverse</p>

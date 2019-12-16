@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ class AdminController extends AbstractController
 {
     /**
      * @Route("/admin/user", name="admin_user")
+     * @IsGranted("ROLE_Admin")
      * @param UsersRepository $repo
      * @return Response
      */
@@ -28,6 +30,7 @@ class AdminController extends AbstractController
     /**
      * Permet d'ajouter un role
      * @Route("/admin/addRole", name="admin_addRole")
+     * @IsGranted("ROLE_Admin")
      * @param $id
      * @param $role
      * @param EntityManagerInterface $manager
@@ -62,6 +65,7 @@ class AdminController extends AbstractController
     /**
      * For remove Role
      * @Route("/admin/removeRole/{id}/{roles}", name="remove_role")
+     * @IsGranted("ROLE_Admin")
      * @param $id
      * @param $roles
      * @param EntityManagerInterface $manager
