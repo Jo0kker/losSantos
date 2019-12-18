@@ -151,7 +151,7 @@ class MailController extends AbstractController
         foreach ($mail->getDest() as $test){
             $IdDest[] = $test->getId();
         }
-        if (in_array($this->getUser()->getId(), $IdDest, true) xor $this->getUser()->getId() === $mail->getAuthor()->getId()){
+        if (in_array($this->getUser()->getId(), $IdDest, true) or $this->getUser()->getId() === $mail->getAuthor()->getId()){
             if (isset($_GET['s']) and ($_GET['s'] === 'recep')){
                 if (!$mail->getLu()) {
                     $mail->setLu(true);
