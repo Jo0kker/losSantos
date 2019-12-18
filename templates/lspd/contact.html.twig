@@ -16,7 +16,7 @@
                 <tbody>
                 {% for contact in contacts %}
                     <tr>
-                        <td>{{ contact.Author.nom }} {{ contact.author.prenom }}</td>
+                        <td><a href="{{ path('new_Mail', {'i': contact.author.id}) }}">{{ contact.Author.nom }} {{ contact.author.prenom }}</a></td>
                         <td>{{ contact.createdAt|date('d/m/Y') }}</td>
                         <td>{{ contact.title }}</td>
                         <td>

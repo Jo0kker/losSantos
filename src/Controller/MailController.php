@@ -82,7 +82,16 @@ class MailController extends AbstractController
     public function mailSend(EntityManagerInterface $manager, Request $request, UsersRepository $repo): Response
     {
         $user = $this->getUser();
-        $listUsers = $repo->findAll();
+        $listUsers = [];
+        $listUsers1 = $repo->findAll();
+        if ($_GET and is_numeric($_GET['i'])){
+            $i = (int)$_GET['i'];
+            $listUsers = $repo->findBy([
+                'id' => $i
+            ]);
+        }else{
+            $listUsers = $listUsers1;
+        }
         $mail = new Mail();
         $form = $this->createForm(MailType::class, $mail);
         $form->handleRequest($request);
