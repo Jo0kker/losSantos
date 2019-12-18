@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nouveau mail{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <h1>Nouveau Mail</h1>
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-lg-5">
+                <h5>Destinataire</h5>
+                <select name="dest" id="" class="selectpicker">
+                    {% for user in listUsers %}
+                        <option value="{{ user.id }}">{{ user.discord }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-lg-5">
+                <h5 for="">Objet du message</h5>
+                {{ form_widget(form.objet) }}
+                {{ form_errors(form.objet) }}
+            </div>
+            <button class="col btn btn-primary col-lg-2">Envoyer</button>
+        </div>
+        <hr>
+        <h2>Message</h2>
+        {{ form_errors(form.msg) }}
+        {{ form_widget(form.msg) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('ckeditor/adapters/jquery.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('textarea.ckeditor').ckeditor();
+        });
+    </script>
+{% endblock %}

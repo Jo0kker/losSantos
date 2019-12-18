@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boite mail{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1>Votre boite mail <a href="{{ path('new_Mail') }}" class="btn btn-primary float-right">Nouveau mail</a></h1>
+        <div class="row">
+            <div class="col-lg-2">
+                <ul class="list-group">
+                    <li class="list-group-item {% if state == 'recep' %}active{% endif %}"><a href="{{ path('mail') }}" class="text-black-50 link cm-link">Boite de réception</a></li>
+                    <li class="list-group-item {% if state == 'send' %}active{% endif %}"><a href="{{ path('mail', {'doc':'send'}) }}" class="text-black-50 link cm-link">Message envoye</a></li>
+                    <li class="list-group-item {% if state == 'del' %}active{% endif %}"><a href="{{ path('mail', {'doc': 'del'}) }}" class="text-black-50 link cm-link">Message supprimer</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-10">
+                <table class="table table-hover" id="tableId">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>{% if state is defined and state == 'send' %} Destinataire {% else %}Auteur{% endif %}</th>
+                        <th>Objet</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for mail in mails %}
+                    <tr {% if mail.lu == false %}class="bg-warning font-weight-bold text-primary"{% endif %}>
+                        <td>{{ mail.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>{% for dest in mail.dest %} {{ dest.discord }} {% endfor %}</td>
+                        <td>{{ mail.objet }}</td>
+                        <td>
+                            <a href="{{ path('mail_content', {'token':mail.token, 's': state}) }}" class="btn btn-primary js-msgContent"><i class="fas fa-envelope-open-text"></i></a>
+                            <a href="{{ path('mail_remove', {'token':mail.token, 's': state}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

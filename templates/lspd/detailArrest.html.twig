@@ -59,7 +59,7 @@
                     {{ arrest.adress }}
                 </div>
                 <div class="col-lg-4">
-                    <h5>Amande</h5>
+                    <h5>Amende</h5>
                     {{ arrest.amande }}
                 </div>
                 <div class="col-lg-4">
@@ -71,10 +71,10 @@
             <div class="row mt-3">
                 <div class="col-lg-6">
                     <h5>Image</h5>
-                    <img src="{{ asset(arrest.img) }}" alt="{{ arrest.name }}">
+                    <img class="img-fluid" src="{{ asset(arrest.img) }}" alt="{{ arrest.name }}">
                 </div>
                 <div class="col-lg-6 shadow border border-white rounded">
-                    <h5>Charge retenu</h5>
+                    <h5>Charges retenues</h5>
                     <hr class="bg-white">
                     {{ arrest.charge|raw }}
                 </div>

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -77,12 +78,37 @@ class Users implements UserInterface
      */
     private $contacts;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Mail", mappedBy="author")
+     */
+    private $mails;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Mail", mappedBy="dest")
+     */
+    private $mailsRecep;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MailSend", mappedBy="author", orphanRemoval=true)
+     */
+    private $mailSends;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\MailSend", mappedBy="dest")
+     */
+    private $mailSendsDest;
+
 
     public function __construct()
     {
         $this->contacts = new ArrayCollection();
         $this->lspdRappArrests = new ArrayCollection();
+        $this->mails = new ArrayCollection();
+        $this->mailsRecep = new ArrayCollection();
+        $this->mailSends = new ArrayCollection();
+        $this->mailSendsDest = new ArrayCollection();
     }
+
 
 
     public function getId(): ?int
@@ -252,6 +278,139 @@ class Users implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Mail[]
+     */
+    public function getMails(): Collection
+    {
+        return $this->mails;
+    }
+
+    public function addMail(Mail $mail): self
+    {
+        if (!$this->mails->contains($mail)) {
+            $this->mails[] = $mail;
+            $mail->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMail(Mail $mail): self
+    {
+        if ($this->mails->contains($mail)) {
+            $this->mails->removeElement($mail);
+            // set the owning side to null (unless already changed)
+            if ($mail->getAuthor() === $this) {
+                $mail->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Mail[]
+     */
+    public function getMailsRecep(): Collection
+    {
+        return $this->mailsRecep;
+    }
+
+    public function addMailsRecep(Mail $mailsRecep): self
+    {
+        if (!$this->mailsRecep->contains($mailsRecep)) {
+            $this->mailsRecep[] = $mailsRecep;
+            $mailsRecep->addDest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMailsRecep(Mail $mailsRecep): self
+    {
+        if ($this->mailsRecep->contains($mailsRecep)) {
+            $this->mailsRecep->removeElement($mailsRecep);
+            $mailsRecep->removeDest($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MailSend[]
+     */
+    public function getMailSends(): Collection
+    {
+        return $this->mailSends;
+    }
+
+    public function addMailSend(MailSend $mailSend): self
+    {
+        if (!$this->mailSends->contains($mailSend)) {
+            $this->mailSends[] = $mailSend;
+            $mailSend->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMailSend(MailSend $mailSend): self
+    {
+        if ($this->mailSends->contains($mailSend)) {
+            $this->mailSends->removeElement($mailSend);
+            // set the owning side to null (unless already changed)
+            if ($mailSend->getAuthor() === $this) {
+                $mailSend->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MailSend[]
+     */
+    public function getMailSendsDest(): Collection
+    {
+        return $this->mailSendsDest;
+    }
+
+    public function addMailSendsDest(MailSend $mailSendsDest): self
+    {
+        if (!$this->mailSendsDest->contains($mailSendsDest)) {
+            $this->mailSendsDest[] = $mailSendsDest;
+            $mailSendsDest->addDest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMailSendsDest(MailSend $mailSendsDest): self
+    {
+        if ($this->mailSendsDest->contains($mailSendsDest)) {
+            $this->mailSendsDest->removeElement($mailSendsDest);
+            $mailSendsDest->removeDest($this);
+        }
+
+        return $this;
+    }
+
+    public function getMailRecepNoRead()
+    {
+        $result = [];
+        foreach ($this->mailsRecep as $mailMini) {
+            if ($mailMini->getlu() === false){
+                foreach ($mailMini->getDest() as $destinataire){
+                    if ($this->getId() === $destinataire->getId()) {
+                        $result[] = $mailMini;
+                    }
+                }
+            }
+        }
+        return $result;
     }
 
 }

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title %}Boite mail{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <h1>Votre boite mail <a href="{{ path('new_Mail') }}" class="btn btn-primary float-right">Nouveau mail</a></h1>
+    <div class="row">
+        <div class="col-lg-2">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{{ path('mail', {'doc': 'recep'}) }}" class="text-black-50 link cm-link">Boite de réception</a></li>
+                <li class="list-group-item"><a href="{{ path('mail', {'doc':'send'}) }}" class="text-black-50 link cm-link">Message envoye</a></li>
+                <li class="list-group-item"><a href="{{ path('mail', {'doc': 'del'}) }}" class="text-black-50 link cm-link">Message supprimer</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-10 bg-gradient-dark shadow border border-white p-3 rounded text-white">
+            <div class="row">
+                <div class="col-lg-4"><h5>Date</h5>{{ mail.createdAt|date('d/m/Y H:i') }}</div>
+                <div class="col-lg-4"><h5>Auteur</h5>{{ mail.author.discord }}</div>
+                <div class="col-lg-4"><span class="h5">Destinataire</span>{% for dest in mail.dest %} {{ dest.discord }} {% endfor %}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h5>Objet</h5>
+                    {{ mail.objet }}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-lg-12 bg-white rounded shadow text-black-50">
+                    <h5>Message</h5>
+                    <hr>
+                    {{ mail.msg|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

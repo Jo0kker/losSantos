@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RappArrestRepository")
@@ -24,16 +25,32 @@ class RappArrest
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min=2,
+     *     minMessage="Trop court",
+     *     max=13,
+     *     maxMessage="Trop Long"
+     * )
      */
     private $userArrest;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min=2,
+     *     minMessage="Trop court",
+     *     max=15,
+     *     maxMessage="Trop long"
+     * )
      */
     private $lieux;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     max=20,
+     *     maxMessage="Trop de caractère"
+     * )
      */
     private $otherUsers;
 
@@ -49,16 +66,32 @@ class RappArrest
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min="2",
+     *     max="15",
+     *     minMessage="Trop court",
+     *     maxMessage="Trop long"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="Trop court",
+     *     max=15,
+     *     maxMessage="Trop long"
+     * )
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     max=25,
+     *     maxMessage="Trop long"
+     * )
      */
     private $adress;
 
@@ -79,6 +112,10 @@ class RappArrest
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     max=10,
+     *     maxMessage="Trop de caractère"
+     * )
      */
     private $sexe;
 
@@ -89,11 +126,23 @@ class RappArrest
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min=2,
+     *     minMessage="Trop court",
+     *     max=10,
+     *     maxMessage="Trop long"
+     * )
      */
     private $amande;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min=1,
+     *     minMessage = "Ne peu etre vide",
+     *     max=10,
+     *     maxMessage = "Trop long"
+     * )
      */
     private $peine;
 
