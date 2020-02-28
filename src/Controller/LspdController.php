@@ -296,4 +296,13 @@ class LspdController extends AbstractController
             'arrest' => $arrest
         ]);
     }
+
+    /**
+     * Permet de voir les rapport d'interv
+     * @Route("/lspd/rapportInter", name="lspd_showRapportInter")
+     */
+    public function showRapportInter()
+    {
+
+    }
 }

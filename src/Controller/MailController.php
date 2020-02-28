@@ -22,6 +22,9 @@ class MailController extends AbstractController
     /**
      * Permet de lister les mails
      * @Route("/mail", name="mail")
+     * @param MailRepository $repoMail
+     * @param MailSendRepository $repoSend
+     * @return Response
      */
     public function index(MailRepository $repoMail, MailSendRepository $repoSend)
     {

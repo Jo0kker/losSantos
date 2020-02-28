@@ -6,6 +6,7 @@ use App\Entity\Roles;
 use App\Entity\Users;
 use App\Form\ProfilType;
 use App\Form\RegisterType;
+use App\Service\Test;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

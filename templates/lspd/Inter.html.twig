@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}Lspd Rapport d'intervention{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <h2>Listing rapport intervention<a class="float-right" href="{{ path('lspd_newRapportArrest') }}"><button class="btn btn-primary">Nouveau rapport</button></a></h2>
+
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Date Rédaction</th>
+                <th>Autheur</th>
+                <th>Date intercention</th>
+                <th>Prenom individu<
+                <th>action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for arrest in rapport %}
+                <tr>
+                    <td>RI-{{ arrest.id }}</td>
+                    <td>{{ arrest.createdAt|date('d/m/Y - H:i') }}</td>
+                    <td>{{ arrest.author }}</td>
+                    <td>{{ arrest.name }}</td>
+                    <td>{{ arrest.prenom }}</td>
+                    <td>{{ arrest.amande }}</td>
+                    <td>{{ arrest.peine }}</td>
+                    <td>
+                        <a href="{{ path('lspd_showDetailRapportArrest', {'id':arrest.id}) }}"><button class="btn btn-circle btn-primary"><i class="fas fa-search"></i></button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

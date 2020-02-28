@@ -98,6 +98,11 @@ class Users implements UserInterface
      */
     private $mailSendsDest;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RappInter", mappedBy="author")
+     */
+    private $rappInters;
+
 
     public function __construct()
     {
@@ -107,6 +112,7 @@ class Users implements UserInterface
         $this->mailsRecep = new ArrayCollection();
         $this->mailSends = new ArrayCollection();
         $this->mailSendsDest = new ArrayCollection();
+        $this->rappInters = new ArrayCollection();
     }
 
 
@@ -411,6 +417,37 @@ class Users implements UserInterface
             }
         }
         return $result;
+    }
+
+    /**
+     * @return Collection|RappInter[]
+     */
+    public function getRappInters(): Collection
+    {
+        return $this->rappInters;
+    }
+
+    public function addRappInter(RappInter $rappInter): self
+    {
+        if (!$this->rappInters->contains($rappInter)) {
+            $this->rappInters[] = $rappInter;
+            $rappInter->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRappInter(RappInter $rappInter): self
+    {
+        if ($this->rappInters->contains($rappInter)) {
+            $this->rappInters->removeElement($rappInter);
+            // set the owning side to null (unless already changed)
+            if ($rappInter->getAuthor() === $this) {
+                $rappInter->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 
 }

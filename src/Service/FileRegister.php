@@ -12,6 +12,7 @@ class FileRegister {
         $this->savePath = $savePath;
     }
 
+
     public function registerFile()
     {
         if ($this->fileName) {
